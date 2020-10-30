@@ -1,0 +1,63 @@
+---
+title: "Find Diverse Podcasts"
+author: "Benfeard"
+date: "10/29/2020"
+output: md_document
+---
+
+## Goals
+
+I want to find new podcasts from diverse backgrounds by mining tweets. There is a hashtag, #podsincolor, that can help me find tweets from podcasts whose hosts are People of Color. I want to compile the information into a dataframe and save that as a CSV file for future analyses.
+
+## Load libraries
+
+```{r}
+# load twitter library
+library(rtweet)
+# text mining library
+library(tidytext)
+# dataframe management and potential plots
+library(tidyverse)
+```
+
+## Access Token/Secret Method
+
+I need to create a token using my Twitter developer account so I can access the Twitter API. I will put everything in a function, create_token().
+
+NOTE: I don't want to publish my personal keys and token so the github version of this code doesn't contain real keys and tokens.
+
+```{r}
+api_key <- "fake_key"
+api_secret_key <- "fake_key"
+access_token <- "fake_key"
+access_token_secret <- "fake_key"
+
+
+## authenticate via web browser
+token <- create_token(
+  app = "OmegaEXE",
+  consumer_key = api_key,
+  consumer_secret = api_secret_key,
+  access_token = access_token,
+  access_secret = access_token_secret)
+```
+
+# Search for Tweets with the appropriate hashtag
+
+```{r}
+podsincolor_tweets <- search_tweets(q = "#podsincolor", n = 10000,
+                                      lang = "en",
+                                      include_rts = FALSE)
+
+#look at the results
+head(podsincolor_tweets$text)
+```
+
+## Data Clean-Up
+
+```{r}
+each_podcast <- unique(podsincolor_tweets$screen_name)
+length(each_podcast)
+head(each_podcast)
+```
+
