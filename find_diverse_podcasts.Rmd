@@ -27,10 +27,10 @@ I need to create a token using my Twitter developer account so I can access the 
 NOTE: I don't want to publish my personal keys and token so the github version of this code doesn't contain real keys and tokens.
 
 ```{r}
-api_key <- "fake_key"
-api_secret_key <- "fake_key"
-access_token <- "fake_key"
-access_token_secret <- "fake_key"
+api_key <- "[insert personal key here]"
+api_secret_key <- "[insert personal key here]"
+access_token <- "[insert personal key here]"
+access_token_secret <- "[insert personal key here]"
 
 
 ## authenticate via web browser
@@ -55,9 +55,35 @@ head(podsincolor_tweets$text)
 
 ## Data Clean-Up
 
+
 ```{r}
-each_podcast <- unique(podsincolor_tweets$screen_name)
+#write_csv(podsincolor_tweets, "podsincolor_tweets.csv") -> Error: Flat files can't store the list column 'hashtags'
+
+dput(tweets, "podsincolor_tweets_02Nov2020.txt")
+saveRDS(tweets, "podsincolor_tweets_02Nov2020.rds")
+
+each_podcast <- unique(tweets$screen_name)
 length(each_podcast)
 head(each_podcast)
+```
+
+## Word Cloud
+
+```{r}
+library(wordcloud)
+library(tm)
+
+all_hashtags <- c()
+
+for(entry in tweets$hashtags) {
+  for(element in entry){
+    all_hashtags <- c(all_hashtags, element)
+  }
+}
+
+head(all_hashtags)
+length(all_hashtags)
+
+wordcloud(all_hashtags, scale = c(2, 1), min.freq = 5, colors = rainbow(30))
 ```
 
