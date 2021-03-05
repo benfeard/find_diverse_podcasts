@@ -5,6 +5,10 @@ date: "10/29/2020"
 output: md_document
 ---
 
+```{r setup, include = FALSE, echo = FALSE}
+knitr::opts_knit$set(root.dir = "/Users/benfeard/Desktop/GitHub/find_diverse_podcasts/")
+```
+
 ## Goals
 
 I want to find new podcasts from diverse backgrounds by mining tweets. There is a hashtag, #podsincolor, that can help me find tweets from podcasts whose hosts are People of Color. I want to compile the information into a dataframe and save that as a CSV file for future analyses.
@@ -52,19 +56,33 @@ podsincolor_tweets <- search_tweets(q = "#podsincolor", n = 10000,
 #look at the results
 head(podsincolor_tweets$text)
 ```
-
 ## Data Clean-Up
-
 
 ```{r}
 #write_csv(podsincolor_tweets, "podsincolor_tweets.csv") -> Error: Flat files can't store the list column 'hashtags'
 
-dput(tweets, "podsincolor_tweets_02Nov2020.txt")
-saveRDS(tweets, "podsincolor_tweets_02Nov2020.rds")
+today <- format(Sys.Date(), "%d%b%Y")
+filename <- paste("podsincolor_tweets_", today, ".rds")
+
+#dput(tweets, "podsincolor_tweets_02Nov2020.txt")
+saveRDS(tweets, filename)
 
 each_podcast <- unique(tweets$screen_name)
 length(each_podcast)
 head(each_podcast)
+```
+
+## Load Twitter Data
+
+```{r}
+tweets <- readRDS("podsincolor_tweets.rds")
+```
+
+## Who Are They?
+
+```{r}
+usernames <- tweets["screen_name"]
+unique(usernames)
 ```
 
 ## Word Cloud
