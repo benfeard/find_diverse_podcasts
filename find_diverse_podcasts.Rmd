@@ -83,6 +83,11 @@ tweets <- readRDS("podsincolor_tweets.rds")
 ```{r}
 usernames <- tweets["screen_name"]
 unique(usernames)
+#table(tweets$screen_name)
+tweets %>%
+  group_by(screen_name) %>%
+  summarise(n = n()) %>%
+  mutate(Freq = n/sum(n))
 ```
 
 ## Word Cloud
